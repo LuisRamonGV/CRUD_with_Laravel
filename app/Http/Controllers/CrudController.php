@@ -9,11 +9,24 @@ use PhpParser\Node\Stmt\TryCatch;
 class CrudController extends Controller
 { 
     //---------------- READ ----------------
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::all(); 
-        return view('welcome', ['productos' => $productos]); 
+        $searchTerm = $request->input('search');
+        $productos = Producto::where('nombre', 'like', "%$searchTerm%")
+                            ->orWhere('precio', 'like', "%$searchTerm%")
+                            ->orWhere('cantidad', 'like', "%$searchTerm%")
+                            ->get(); 
+        return view('welcome', ['productos' => $productos, 'searchTerm' => $searchTerm]); 
     }
+
+    // public function search(Request $request)
+    // {
+    //     $searchTerm = $request->input('search');
+    //     $productos = Producto::where('nombre', 'LIKE', "%$searchTerm%")->get();
+    
+    //     return view('partials.productos_table', ['productos' => $productos]);
+    // }
+
 
     public function show($id_producto)
     {
@@ -65,6 +78,8 @@ class CrudController extends Controller
             return back()->with('correct', 'Producto modificado correctamente.');
         } catch (\Throwable $th) {
             return back()->with("incorrect", "Error al modificar");
+            // return back()->with("incorrect", "Error al modificar: " . $th->getMessage());
+
         }
     }
 

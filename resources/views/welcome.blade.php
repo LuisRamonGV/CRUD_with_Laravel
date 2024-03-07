@@ -11,6 +11,28 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <script src="https://kit.fontawesome.com/646ac4fad6.js" crossorgin='anonymous'></script>
+
+    <!-- Enlaces a los archivos Uikit -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.6/css/uikit.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.6/css/uikit-rtl.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.6/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.6/js/uikit-icons.min.js"></script>
+
+
+    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">-</button>
+
+    <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true">
+        <div class="uk-offcanvas-bar">
+    
+            <button class="uk-offcanvas-close" type="button" uk-close></button>
+    
+            <h3>Title</h3>
+    
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    
+        </div>
+    </div>
+
 </head>
 
 <body>
@@ -70,9 +92,17 @@
     </div>
 
     <div class="p-5 table-responsive">
-        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalRegistrar">
-            Agregar producto
-        </button>
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#modalRegistrar">
+                Agregar producto
+            </button>
+            <form action="{{ route('productos.index') }}" method="GET">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar productos" name="search">
+                    <button type="button" class="btn btn-info">Buscar</button>
+                </div>
+            </form>
+        </div>
         <table class="table table-striped table-bordered table-hover">
             <thead class="bg-primary text-white">
                 <tr>
@@ -84,6 +114,9 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
+                {{-- @if (isset($search))
+                    <p>Resultados de la búsqueda para: "{{ $search }}"</p>
+                @endif --}}
                 @foreach ($productos as $producto)
                     <tr>
                         <th>{{ $producto->id_producto }}</th>
@@ -156,6 +189,26 @@
             </tbody>
         </table>
     </div>
+
+    {{-- <script>
+        $(document).ready(function() {
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val();
+    
+                $.ajax({
+                    url: '/productos/search',
+                    method: 'GET',
+                    data: { search: searchTerm },
+                    success: function(response) {
+                        $('#productosTable').html(response);
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script> --}}
 
 </body>
 

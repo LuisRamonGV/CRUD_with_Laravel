@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
     //---------------- READ ----------------
 Route::get('/', [CrudController::class, 'index'])->name('productos.index');
 Route::get('/productos/{id}', [CrudController::class, 'show'])->name('productos.show');
+// Route::get('/productos/search', [CrudController::class, 'search'])->name('productos.search');
 
     //---------------- CREATE ----------------
 Route::post('/productos', [CrudController::class, 'create'])->name('productos.store');
