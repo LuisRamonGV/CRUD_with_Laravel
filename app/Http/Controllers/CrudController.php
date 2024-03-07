@@ -3,75 +3,79 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Producto;
 use PhpParser\Node\Stmt\TryCatch;
 
 class CrudController extends Controller
+{ 
+    //---------------- READ ----------------
+    public function index()
+    {
+        $productos = Producto::all(); 
+        return view('welcome', ['productos' => $productos]); 
+    }
+
+    public function show($id_producto)
+    {
+        $producto = Producto::findOrFail($id_producto);
+        return view('producto.show', compact('producto'));
+    }
+
+    //---------------- CREATE ----------------
+    public function create(Request $request)
 {
-    public function index(){
-        $datos=DB::select(" select * from producto ");
-        return view("welcome")->with("datos", $datos);
-    }
-
-    public function create(Request $request){
-        try{
-            // Verificar si ya existe un producto con el mismo nombre
-            $exist = DB::select("SELECT * FROM producto WHERE nombre = ?", [$request->txtnombre]);
-            if (!empty($exist)) {
-                return back()->with("incorrect", "Ya existe el producto.");
-            }
-    
-            // Insertar el nuevo producto
-            $sql = DB::insert("INSERT INTO producto(nombre, precio, cantidad) VALUES (?, ?, ?)", [
-                $request->txtnombre,
-                $request->txtprecio,
-                $request->txtcantidad
-            ]);
-        } catch(\Throwable $th){
-            $sql = 0;
-        }
-    
-        if ($sql == true){
-            return back()->with('correct', 'El producto se ha agregado correctamente.');
-        } else {
-            return back()->with("incorrect", "Error al registrar");
-        }
-    }
-    
-
-    public function update(Request $request){
-        try{
-        $sql = DB::update(" update producto set nombre=?, precio=?, cantidad=? where id_producto=? ",[
-            $request->txtnombre,
-            $request->txtprecio,
-            $request->txtcantidad,
-            $request->txtcodigo
+    try {
+        // Validar los datos
+        $request->validate([
+            'nombre' => 'required',
+            'precio' => 'required',
+            'cantidad' => 'required',
         ]);
-        if ($sql==0){
-            $sql=1;
-        }
-        } catch(\Throwable $th){
-            $sql = 0;
-        }
-        if ($sql == true){
-            return back()->with('correct', 'Producto modificado correctamente.');
-        } else {
-            return back()->with("incorrect", "Error al modificar");
 
+        // Crear el nuevo producto
+        $producto = new Producto();
+        $producto->nombre = $request->input('nombre');
+        $producto->precio = $request->input('precio');
+        $producto->cantidad = $request->input('cantidad');
+        $producto->save();
+
+        return back()->with('correct', 'El producto se ha agregado correctamente.');
+    } catch (\Throwable $th) {
+        return back()->with("incorrect", "Error al registrar");
+    }
+}
+
+    //---------------- UPDATE ----------------
+    public function update(Request $request, $id_producto)
+    {
+        try {
+            $request->validate([
+                'nombre' => 'required',
+                'precio' => 'required',
+                'cantidad' => 'required',
+            ]);
+
+            $producto = Producto::find($id_producto);
+
+            $producto->nombre = $request->input('nombre');
+            $producto->precio = $request->input('precio');
+            $producto->cantidad = $request->input('cantidad');
+            $producto->save();
+
+            return back()->with('correct', 'Producto modificado correctamente.');
+        } catch (\Throwable $th) {
+            return back()->with("incorrect", "Error al modificar");
         }
     }
 
-    public function delete($id){
-        try{
-        $sql = DB::delete(" delete from producto where id_producto=$id ");
-        } catch(\Throwable $th){
-            $sql = 0;
-        }
-        if ($sql == true){
-            return back()->with('correct', 'Producto eliminado.');
-        } else {
-            return back()->with("incorrect", "Error al eliminar");
-
+    //---------------- DELETE ----------------
+    public function destroy($id_producto)
+    {
+        try {
+            Producto::destroy($id_producto);
+            return back()->with('correct', 'Producto eliminado correctamente.');
+        } catch (\Throwable $th) {
+            return back()->with('incorrect', 'Error al eliminar el producto.');
         }
     }
 }

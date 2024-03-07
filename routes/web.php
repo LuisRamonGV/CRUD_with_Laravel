@@ -16,14 +16,16 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-// Read
-Route::get("/",[CrudController::class,"index"])->name("crud.index");
 
-// Create
-Route::post("/register",[CrudController::class,"create"])->name("crud.create");
+    //---------------- READ ----------------
+Route::get('/', [CrudController::class, 'index'])->name('productos.index');
+Route::get('/productos/{id}', [CrudController::class, 'show'])->name('productos.show');
 
-// Update
-Route::post("/update",[CrudController::class,"update"])->name("crud.update");
+    //---------------- CREATE ----------------
+Route::post('/productos', [CrudController::class, 'create'])->name('productos.store');
 
-// Delete
-Route::get("/delete-{id}",[CrudController::class,"delete"])->name("crud.delete");
+    //---------------- UPDATE ----------------
+Route::put('/productos/{id}', [CrudController::class, 'update'])->name('productos.update');
+
+    //---------------- DELETE ----------------
+Route::delete('/productos/{id}', [CrudController::class, 'destroy'])->name('productos.destroy');
