@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
     //---------------- READ ----------------
 Route::get('/', [CrudController::class, 'index'])->name('productos.index');
-Route::get('/productos/{id}', [CrudController::class, 'show'])->name('productos.show');
+// Route::get('/productos/{id}', [CrudController::class, 'show'])->name('productos.show');
 // Route::get('/productos/search', [CrudController::class, 'search'])->name('productos.search');
 
     //---------------- CREATE ----------------
@@ -30,3 +30,8 @@ Route::put('/productos/{id}', [CrudController::class, 'update'])->name('producto
 
     //---------------- DELETE ----------------
 Route::delete('/productos/{id}', [CrudController::class, 'destroy'])->name('productos.destroy');
+
+
+
+
+

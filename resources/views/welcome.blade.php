@@ -18,18 +18,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.6/js/uikit.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.7.6/js/uikit-icons.min.js"></script>
 
-
-    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">-</button>
+    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #offcanvas-push">=</button>
 
     <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true">
         <div class="uk-offcanvas-bar">
-    
             <button class="uk-offcanvas-close" type="button" uk-close></button>
-    
-            <h3>Title</h3>
-    
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    
+            <h3>Sidebar</h3>
+                <p>Sidebar funcionando</p>    
         </div>
     </div>
 
@@ -104,8 +99,8 @@
             </form>
         </div>
         <table class="table table-striped table-bordered table-hover">
-            <thead class="bg-primary text-white">
-                <tr>
+            <thead>
+                <tr class="bg-brown text-white">
                     <th scope="col">Codigo</th>
                     <th scope="col">Nombre del producto</th>
                     <th scope="col">Precio</th>
@@ -114,9 +109,6 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                {{-- @if (isset($search))
-                    <p>Resultados de la búsqueda para: "{{ $search }}"</p>
-                @endif --}}
                 @foreach ($productos as $producto)
                     <tr>
                         <th>{{ $producto->id_producto }}</th>
@@ -189,6 +181,52 @@
             </tbody>
         </table>
     </div>
+
+    {{-- <div class="p-5 table-responsive">
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#modalRegistrar">
+                Agregar producto
+            </button>
+            <form action="{{ route('productos.index') }}" method="GET">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar productos" name="search">
+                    <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+                </div>
+            </form>
+        </div>
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Nombre del producto</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                @foreach ($productos as $producto)
+                    <tr>
+                        <th>{{ $producto->id_producto }}</th>
+                        <td>{{ $producto->nombre }}</td>
+                        <td>${{ number_format($producto->precio, 2) }}</td>
+                        <td>{{ $producto->cantidad }}</td>
+                        <td style="width: 6rem;">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Editar/Eliminar
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item" href="{{ route('productos.edit', $producto->id_producto) }}">Editar</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('productos.destroy', $producto->id_producto) }}">Eliminar</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div> --}}
 
     {{-- <script>
         $(document).ready(function() {
